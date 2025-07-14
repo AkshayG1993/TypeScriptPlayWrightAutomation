@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pojos/LoginPage';
-import { loginData} from '../myDemoTests/myDataSet';
-import { loginInvalidData} from '../myDemoTests/myInvalidDataSet';
+import { loginData} from '../dataProviders/myDataSet';
+import { loginInvalidData} from '../dataProviders/myInvalidDataSet';
 
 test.describe('Login Tests', () => {
     const baseURL = 'https://www.saucedemo.com/'; // Replace with your actual base URL
