@@ -14,21 +14,33 @@ test.describe('Login Tests', () => {
 
 test.describe('Login tests with multiple valid credentials ', () => {
   loginData.forEach(({ username, password }) => {
-    test(`username: ${username} and password: ${password}`, async ({ page }) => {
+    test(`username: ${username} and password: ${password}`, async ({ page },testInfo) => {
+        try{
       await loginPage.login(username, password);
       await expect(page).toHaveURL(baseURL + 'inventory.html');
+              } catch (err) {
+                const screenshot = await page.screenshot();
+                await testInfo.attach('screenshot', { body: screenshot, contentType: 'image/png' });
+                throw err;
+              }
     });
   });
 });
 
 test.describe('Login tests with multiple invalid credentials ', () => {
   loginInvalidData.forEach(({ username, password ,error}) => {
-    test(`username: ${username} and password: ${password}`, async ({ page }) => {
+    test(`username: ${username} and password: ${password}`, async ({ page },testInfo) => {
+        try{
       await loginPage.login(username, password);
     await expect(page).toHaveURL(baseURL);
     // Add assertions to verify failed login, e.g., checking for an error message
     expect(await loginPage.getErrorMessage()).toEqual(error);
-  });
+        } catch (err) {
+          const screenshot = await page.screenshot();
+          await testInfo.attach('screenshot', { body: screenshot, contentType: 'image/png' });
+          throw err;
+        }
+    });
 });
 });
 });
